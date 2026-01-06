@@ -1,17 +1,18 @@
 package org.acme;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+
+import java.util.Optional;
 
 @Path("/saludar")
 public class GreetingResource {
 
-    @GET
-    public String hello() {
-        return "Hello from Quarkus REST";
-    }
+    //Creacion de endpoint
+    //@GET
+    //public String hello() {
+    //    return "Hello from Quarkus REST";
+    //}
 
     @GET
     @Path("/dia")
@@ -31,6 +32,29 @@ public class GreetingResource {
         return "Buenos Noche";
     }
 
+    //PathParam y QueryParam
+    @GET
+    @Path("/mensajevacio")
+    public String saludarVacio(@QueryParam("mensaje") String mensaje) {
+        /*if(mensaje == null) {
+            return "Mensaje Vacio";
+        }else {
+            return ">" + mensaje;
+        }*/
+        return Optional.ofNullable(mensaje).orElse("Mensaje vacio").toUpperCase();
+    }
+
+    @GET
+    @Path("/{nombre}")
+    public String saludarPath(@PathParam("nombre") String nombre) {
+        return Optional.ofNullable(nombre).map(n -> n.toUpperCase()).orElse("Nombre Vacio");
+    }
+
+    @GET
+    @Path("/{nombre}/mayuscula")
+    public String saludo(@PathParam("nombre") String nombre) {
+        return "Hola, " + nombre.toUpperCase();
+    }
 
 
 }
